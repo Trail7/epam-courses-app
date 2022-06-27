@@ -26,7 +26,6 @@ function App() {
 		list.push(author);
 		updateAuthorsList(list);
 	}
-
 	return (
 		<>
 			<Header />

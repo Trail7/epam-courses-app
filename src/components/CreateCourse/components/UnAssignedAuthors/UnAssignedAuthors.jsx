@@ -12,18 +12,14 @@ export const UnAssignedAuthors = ({
 }) => {
 	const [authorsForNewCourse, filterAuthorsForNewCourse] =
 		useState(authorsList);
-	function filterAuthors() {
+
+	useEffect(() => {
 		if (newCourseCandidate.authors.length < 1)
 			filterAuthorsForNewCourse(authorsList);
 		const filtered = [...authorsList].filter(
 			(i) => !newCourseCandidate.authors.includes(i.id)
 		);
 		filterAuthorsForNewCourse(filtered);
-	}
-
-	useEffect(() => {
-		filterAuthors();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [authorsList, newCourseCandidate]);
 	return (
 		<>
@@ -38,7 +34,6 @@ export const UnAssignedAuthors = ({
 							const newCourseCandidateClone = { ...newCourseCandidate };
 							newCourseCandidateClone.authors.push(event.target.id);
 							updateNewCourseCandidate(newCourseCandidateClone);
-							filterAuthors();
 						}}
 					/>
 				</div>

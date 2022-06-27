@@ -24,7 +24,8 @@ export const CreateCourse = ({
 		authors: [],
 	});
 	const [isFormValid, validateCourseCandidate] = useState(false);
-	function validateCourse() {
+
+	useEffect(() => {
 		validateCourseCandidate(
 			newCourseCandidate.title.length > 0 &&
 				newCourseCandidate.description.length > 1 &&
@@ -32,13 +33,7 @@ export const CreateCourse = ({
 				newCourseCandidate.authors.length > 0 &&
 				true
 		);
-	}
-
-	useEffect(() => {
-		validateCourse();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [newCourseCandidate]);
-	console.log(isFormValid);
 
 	return (
 		<div className='container border'>
