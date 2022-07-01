@@ -50,7 +50,6 @@ export const mockedAuthorsList = [
 
 export const SEARCH_BUTTON = 'Search';
 export const LOGOUT_BUTTON = 'Logout';
-export const USER_NAME = 'Arthur Harmash';
 export const LOGO =
 	'https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/green_transpicttractor_1484336757-1.png';
 export const LOGO_ALT_TEXT = 'logo';
@@ -86,3 +85,16 @@ export const NEW_COURSE_AUTHORS_LIST_EMPTY = 'Author list is empty';
 export const NEW_COURSE_DELETE_AUTHOR = 'Delete author';
 
 export const ALERT_VALIDATION = 'Please, fill in all fields';
+
+export const REGISTRATION = 'Registration';
+export const NAME = 'Name';
+export const ENTER_NAME = 'Enter name';
+export const EMAIL = 'Email';
+export const ENTER_EMAIL = 'Enter email';
+export const PASSWORD = 'Password';
+export const ENTER_PASSWORD = 'Enter password';
+export const LOGIN_LINK_TEXT = 'If you have an account you can ';
+export const LOGIN = 'Login';
+export const REGISTRATION_LINK_TEXT = "If you don't have an account you can ";
+export const REGISTER = 'Register';
+export const BACK_BUTTON = '< Back to courses';

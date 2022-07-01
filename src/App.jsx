@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header/Header';
-import { Courses } from './components/Courses/Courses';
+import Courses from './components/Courses/Courses';
 import { v4 as uuidv4 } from 'uuid';
 
 import { mockedCoursesList, mockedAuthorsList } from './constants';
-import { CreateCourse } from './components/CreateCourse/CreateCourse';
+import CreateCourse from './components/CreateCourse/CreateCourse';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Registration } from './components/Registration/Registration';
+import { CourseInfo } from './components/CourseInfo/CourseInfo';
+import { Login } from './components/Login/Login';
 
 function App() {
-	const [state, setState] = useState(true);
 	const [coursesList, updateCoursesList] = useState(mockedCoursesList);
 	const [authorsList, updateAuthorsList] = useState(mockedAuthorsList);
+	const [user, setUser] = useState('');
 
 	function handleCoursesListChange(newCourse) {
 		const list = coursesList.concat();
@@ -26,23 +30,36 @@ function App() {
 		list.push(author);
 		updateAuthorsList(list);
 	}
+
 	return (
 		<>
-			<Header />
-			{state ? (
-				<Courses
-					mockedCoursesList={coursesList}
-					mockedAuthorsList={authorsList}
-					hideCoursesHandler={() => setState(!state)}
+			<Header user={user} />
+			<Routes>
+				<Route path='/' element={<Navigate to='/login' />} />
+				<Route path='/registration' element={<Registration />} />
+				<Route path='/login' element={<Login setUser={setUser} />} />
+				<Route
+					path='/courses'
+					exact
+					element={
+						<Courses
+							mockedCoursesList={coursesList}
+							mockedAuthorsList={authorsList}
+						/>
+					}
 				/>
-			) : (
-				<CreateCourse
-					authorsList={authorsList}
-					onNewAuthorCreated={handleAuthorsListUpdate}
-					onNewCourseCreated={handleCoursesListChange}
-					hideCoursesHandler={() => setState(!state)}
+				<Route
+					path='/courses/add'
+					element={
+						<CreateCourse
+							authorsList={authorsList}
+							onNewAuthorCreated={handleAuthorsListUpdate}
+							onNewCourseCreated={handleCoursesListChange}
+						/>
+					}
 				/>
-			)}
+				<Route path='/courses/:courseId' element={<CourseInfo />} />
+			</Routes>
 		</>
 	);
 }

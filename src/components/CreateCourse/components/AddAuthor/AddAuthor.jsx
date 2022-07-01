@@ -5,10 +5,11 @@ import {
 	NEW_COURSE_NEW_AUTHOR_NAME,
 	NEW_COURSE_NEW_AUTHOR_NAME_PLACEHOLDER,
 } from '../../../../constants';
-import { Input } from '../../../../common/Input/Input';
-import { Button } from '../../../../common/Button/Button';
+import Input from '../../../../common/Input/Input';
+import Button from '../../../../common/Button/Button';
+import PropTypes from 'prop-types';
 
-export const AddAuthor = (props) => {
+function AddAuthor({ addNewAuthor }) {
 	const [authorInputValue, setAuthorInputValue] = useState('');
 
 	return (
@@ -31,7 +32,7 @@ export const AddAuthor = (props) => {
 						if (authorInputValue.length < 2) {
 							return;
 						}
-						props.addNewAuthor(authorInputValue);
+						addNewAuthor(authorInputValue);
 						setAuthorInputValue('');
 					}}
 					buttonText={NEW_COURSE_ADD_AUTHOR_CREATE_AUTHOR_BUTTON}
@@ -39,4 +40,10 @@ export const AddAuthor = (props) => {
 			</div>
 		</>
 	);
+}
+
+AddAuthor.propTypes = {
+	addNewAuthor: PropTypes.func,
 };
+
+export default AddAuthor;
