@@ -3,21 +3,27 @@ import {
 	NEW_COURSE_TITLE,
 	NEW_COURSE_TITLE_PLACEHOLDER,
 } from '../../../../constants';
-import { Input } from '../../../../common/Input/Input';
+import Input from '../../../../common/Input/Input';
+import PropTypes from 'prop-types';
 
-export const NewCourseTitle = ({
-	updateNewCourseCandidate,
-	newCourseCandidate,
-}) => (
-	<Input
-		id={NEW_COURSE_TITLE}
-		labelText={NEW_COURSE_TITLE}
-		placeholderText={NEW_COURSE_TITLE_PLACEHOLDER}
-		onChange={(event) =>
-			updateNewCourseCandidate({
-				...newCourseCandidate,
-				title: event.target.value,
-			})
-		}
-	/>
-);
+function NewCourseTitle({ updateNewCourseCandidate, newCourseCandidate }) {
+	return (
+		<Input
+			id={NEW_COURSE_TITLE}
+			labelText={NEW_COURSE_TITLE}
+			placeholderText={NEW_COURSE_TITLE_PLACEHOLDER}
+			onChange={(event) =>
+				updateNewCourseCandidate({
+					...newCourseCandidate,
+					title: event.target.value,
+				})
+			}
+		/>
+	);
+}
+NewCourseTitle.propTypes = {
+	updateNewCourseCandidate: PropTypes.func,
+	newCourseCandidate: PropTypes.object,
+};
+
+export default NewCourseTitle;

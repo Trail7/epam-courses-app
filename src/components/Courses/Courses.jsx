@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { CourseCard } from './Components/CourseCard/CourseCard';
-import { SearchBar } from './Components/SearchBar/SearchBar';
-import { Button } from '../../common/Button/Button';
+import CourseCard from './Components/CourseCard/CourseCard';
+import SearchBar from './Components/SearchBar/SearchBar';
+import Button from '../../common/Button/Button';
 import { ADD_NEW_COURSE_BUTTON } from '../../constants';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export const Courses = ({
-	hideCoursesHandler,
-	mockedCoursesList,
-	mockedAuthorsList,
-}) => {
+function Courses({ mockedCoursesList, mockedAuthorsList }) {
+	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState('');
 	const [coursesList, filterCoursesList] = useState(mockedCoursesList);
 	const filteredList = mockedCoursesList.filter((course) => {
@@ -51,7 +50,7 @@ export const Courses = ({
 				<div className='d-flex justify-content-end col-md-6 align-items-center'>
 					<Button
 						buttonText={ADD_NEW_COURSE_BUTTON}
-						onClick={hideCoursesHandler}
+						onClick={() => navigate('/courses/add')}
 					/>
 				</div>
 			</div>
@@ -67,4 +66,11 @@ export const Courses = ({
 			})}
 		</div>
 	);
+}
+
+Courses.propTypes = {
+	mockedCoursesList: PropTypes.arrayOf(PropTypes.object),
+	mockedAuthorsList: PropTypes.arrayOf(PropTypes.object),
 };
+
+export default Courses;

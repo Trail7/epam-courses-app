@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { ALERT_VALIDATION, CREATE_COURSE_BUTTON } from '../../constants';
 import { v4 as uuidv4 } from 'uuid';
-import { Button } from '../../common/Button/Button';
-import { Duration } from './components/Duration/Duration';
-import { AddAuthor } from './components/AddAuthor/AddAuthor';
-import { Description } from './components/Description/Description';
-import { AssignedAuthorsList } from './components/AssignedAuthorsList/AssignedAuthorsList';
-import { NewCourseTitle } from './components/NewCourseTitle/NewCourseTitle';
-import { UnAssignedAuthors } from './components/UnAssignedAuthors/UnAssignedAuthors';
+import Button from '../../common/Button/Button';
+import Duration from './components/Duration/Duration';
+import AddAuthor from './components/AddAuthor/AddAuthor';
+import Description from './components/Description/Description';
+import AssignedAuthorsList from './components/AssignedAuthorsList/AssignedAuthorsList';
+import NewCourseTitle from './components/NewCourseTitle/NewCourseTitle';
+import UnAssignedAuthors from './components/UnAssignedAuthors/UnAssignedAuthors';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export const CreateCourse = ({
-	onNewAuthorCreated,
-	authorsList,
-	onNewCourseCreated,
-	hideCoursesHandler,
-}) => {
+function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
+	const navigate = useNavigate();
 	const [newCourseCandidate, updateNewCourseCandidate] = useState({
 		id: uuidv4(),
 		title: '',
@@ -50,7 +48,7 @@ export const CreateCourse = ({
 						onClick={() => {
 							if (isFormValid) {
 								onNewCourseCreated(newCourseCandidate);
-								hideCoursesHandler();
+								navigate('/courses');
 							} else {
 								alert(ALERT_VALIDATION);
 							}
@@ -93,4 +91,12 @@ export const CreateCourse = ({
 			</div>
 		</div>
 	);
+}
+
+CreateCourse.propTypes = {
+	onNewAuthorCreated: PropTypes.func,
+	authorsList: PropTypes.arrayOf(PropTypes.object),
+	onNewCourseCreated: PropTypes.func,
 };
+
+export default CreateCourse;

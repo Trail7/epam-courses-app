@@ -4,8 +4,9 @@ import {
 	NEW_COURSE_DURATION_PLACEHOLDER,
 	NEW_COURSE_DURATION_TITLE,
 } from '../../../../constants';
-import { Input } from '../../../../common/Input/Input';
+import Input from '../../../../common/Input/Input';
 import { getCourseDuration } from '../../../../helpers/getCourseDuration';
+import PropTypes from 'prop-types';
 
 export const Duration = ({ updateNewCourseCandidate, newCourseCandidate }) => {
 	const duration = getCourseDuration(newCourseCandidate.duration);
@@ -31,3 +32,10 @@ export const Duration = ({ updateNewCourseCandidate, newCourseCandidate }) => {
 		</>
 	);
 };
+
+Duration.propTypes = {
+	updateNewCourseCandidate: PropTypes.func,
+	newCourseCandidate: PropTypes.object,
+};
+
+export default Duration;

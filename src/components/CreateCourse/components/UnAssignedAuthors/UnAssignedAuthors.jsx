@@ -3,13 +3,14 @@ import {
 	NEW_COURSE_ADD_AUTHOR_BUTTON,
 	NEW_COURSE_AUTHOR_TITLE,
 } from '../../../../constants';
-import { AuthorItem } from '../AuthorItem/AuthorItem';
+import AuthorItem from '../AuthorItem/AuthorItem';
+import PropTypes from 'prop-types';
 
-export const UnAssignedAuthors = ({
+function UnAssignedAuthors({
 	newCourseCandidate,
 	updateNewCourseCandidate,
 	authorsList,
-}) => {
+}) {
 	const [authorsForNewCourse, filterAuthorsForNewCourse] =
 		useState(authorsList);
 
@@ -40,4 +41,12 @@ export const UnAssignedAuthors = ({
 			))}
 		</>
 	);
+}
+
+UnAssignedAuthors.propTypes = {
+	newCourseCandidate: PropTypes.object,
+	updateNewCourseCandidate: PropTypes.func,
+	authorsList: PropTypes.arrayOf(PropTypes.object),
 };
+
+export default UnAssignedAuthors;
