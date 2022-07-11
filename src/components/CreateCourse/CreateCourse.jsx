@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ALERT_VALIDATION, CREATE_COURSE_BUTTON } from '../../constants';
 import { v4 as uuidv4 } from 'uuid';
 import Button from '../../common/Button/Button';
@@ -9,9 +9,18 @@ import AssignedAuthorsList from './components/AssignedAuthorsList/AssignedAuthor
 import NewCourseTitle from './components/NewCourseTitle/NewCourseTitle';
 import UnAssignedAuthors from './components/UnAssignedAuthors/UnAssignedAuthors';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import store from '../../store';
+import {
+	addNewCourseToStore,
+	fetchAllCourses,
+} from '../../store/courses/actions';
+import { fetchAllAuthors } from '../../store/authors/actions';
+import { useSelector } from 'react-redux';
+import { getAuthors, getCourses } from '../../selectors';
 
-function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
+export default function CreateCourse() {
+	const coursesList = useSelector(getCourses);
+	const authors = useSelector(getAuthors);
 	const navigate = useNavigate();
 	const [newCourseCandidate, updateNewCourseCandidate] = useState({
 		id: uuidv4(),
@@ -33,6 +42,17 @@ function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
 		);
 	}, [newCourseCandidate]);
 
+	useMemo(() => {
+		if (coursesList.length === 0) store.dispatch(fetchAllCourses());
+		if (authors.length === 0) store.dispatch(fetchAllAuthors());
+	}, [coursesList, authors]);
+
+	const handleNewCourseCreation = (value) => {
+		const list = [...coursesList];
+		list.push(value);
+		store.dispatch(addNewCourseToStore(list));
+	};
+
 	return (
 		<div className='container border'>
 			<div className='row mb-2 mt-4'>
@@ -47,7 +67,7 @@ function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
 						buttonText={CREATE_COURSE_BUTTON}
 						onClick={() => {
 							if (isFormValid) {
-								onNewCourseCreated(newCourseCandidate);
+								handleNewCourseCreation(newCourseCandidate);
 								navigate('/courses');
 							} else {
 								alert(ALERT_VALIDATION);
@@ -63,11 +83,10 @@ function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
 			<div className='container border mb-4'>
 				<div className='row mb-4 mt-4'>
 					<div className='col-md-6'>
-						<AddAuthor addNewAuthor={onNewAuthorCreated} />
+						<AddAuthor />
 					</div>
 					<div className='col-md-6'>
 						<UnAssignedAuthors
-							authorsList={authorsList}
 							newCourseCandidate={newCourseCandidate}
 							updateNewCourseCandidate={updateNewCourseCandidate}
 						/>
@@ -83,7 +102,6 @@ function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
 					<div className='col-md-6'>
 						<AssignedAuthorsList
 							newCourseCandidate={newCourseCandidate}
-							authorsList={authorsList}
 							updateNewCourseCandidate={updateNewCourseCandidate}
 						/>
 					</div>
@@ -92,11 +110,3 @@ function CreateCourse({ onNewAuthorCreated, authorsList, onNewCourseCreated }) {
 		</div>
 	);
 }
-
-CreateCourse.propTypes = {
-	onNewAuthorCreated: PropTypes.func,
-	authorsList: PropTypes.arrayOf(PropTypes.object),
-	onNewCourseCreated: PropTypes.func,
-};
-
-export default CreateCourse;

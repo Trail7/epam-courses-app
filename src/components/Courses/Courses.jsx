@@ -4,13 +4,20 @@ import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
 import { ADD_NEW_COURSE_BUTTON } from '../../constants';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { fetchAllCourses } from '../../store/courses/actions';
+import { useSelector } from 'react-redux';
+import store from '../../store';
+import { getAuthors, getCourses } from '../../selectors';
+import { fetchAllAuthors } from '../../store/authors/actions';
 
-function Courses({ mockedCoursesList, mockedAuthorsList }) {
+export default function Courses() {
+	const courses = useSelector(getCourses);
+	const authors = useSelector(getAuthors);
 	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState('');
-	const [coursesList, filterCoursesList] = useState(mockedCoursesList);
-	const filteredList = mockedCoursesList.filter((course) => {
+	const [coursesList, filterCoursesList] = useState(courses);
+
+	const filteredList = courses.filter((course) => {
 		return (
 			course.id.toLowerCase().includes(searchValue.toLowerCase()) ||
 			course.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -18,8 +25,15 @@ function Courses({ mockedCoursesList, mockedAuthorsList }) {
 	});
 
 	useEffect(() => {
-		filterCoursesList(mockedCoursesList);
-	}, [mockedCoursesList, mockedAuthorsList]);
+		if (courses.length === 0) store.dispatch(fetchAllCourses());
+		if (authors.length === 0) store.dispatch(fetchAllAuthors());
+		// eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		filterCoursesList(courses);
+	}, [courses]);
+
 	const handleClick = (event) => {
 		event.preventDefault();
 		filterCoursesList(filteredList);
@@ -27,15 +41,25 @@ function Courses({ mockedCoursesList, mockedAuthorsList }) {
 
 	const handleChange = (event) => {
 		setSearchValue(event.target.value);
-		if (!event.target.value) filterCoursesList(mockedCoursesList);
+		if (!event.target.value) filterCoursesList(courses);
 	};
 
 	const getAuthorsById = (list) => {
 		return list.map((id) =>
-			mockedAuthorsList
-				.filter((author) => author.id === id)
-				.map((author) => author.name)
+			authors.filter((author) => author.id === id).map((author) => author.name)
 		);
+	};
+
+	const renderCourses = () => {
+		return coursesList.map((course) => {
+			return (
+				<CourseCard
+					key={course.id}
+					course={course}
+					authors={getAuthorsById(course.authors)}
+				/>
+			);
+		});
 	};
 
 	return (
@@ -54,23 +78,7 @@ function Courses({ mockedCoursesList, mockedAuthorsList }) {
 					/>
 				</div>
 			</div>
-
-			{coursesList.map((course) => {
-				return (
-					<CourseCard
-						key={course.id}
-						course={course}
-						authors={getAuthorsById(course.authors)}
-					/>
-				);
-			})}
+			{renderCourses()}
 		</div>
 	);
 }
-
-Courses.propTypes = {
-	mockedCoursesList: PropTypes.arrayOf(PropTypes.object),
-	mockedAuthorsList: PropTypes.arrayOf(PropTypes.object),
-};
-
-export default Courses;

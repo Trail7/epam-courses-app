@@ -7,10 +7,25 @@ import {
 } from '../../../../constants';
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getAuthors } from '../../../../selectors';
+import { v4 as uuidv4 } from 'uuid';
+import store from '../../../../store';
+import { addNewAuthor } from '../../../../store/authors/actions';
 
-function AddAuthor({ addNewAuthor }) {
+function AddAuthor() {
+	const authors = useSelector(getAuthors);
 	const [authorInputValue, setAuthorInputValue] = useState('');
+
+	function handleAddNewAuthor(value) {
+		const authorsListCandidate = [...authors];
+		const authorCandidate = {
+			id: uuidv4(),
+			name: value,
+		};
+		authorsListCandidate.push(authorCandidate);
+		store.dispatch(addNewAuthor(authorsListCandidate));
+	}
 
 	return (
 		<>
@@ -32,7 +47,7 @@ function AddAuthor({ addNewAuthor }) {
 						if (authorInputValue.length < 2) {
 							return;
 						}
-						addNewAuthor(authorInputValue);
+						handleAddNewAuthor(authorInputValue);
 						setAuthorInputValue('');
 					}}
 					buttonText={NEW_COURSE_ADD_AUTHOR_CREATE_AUTHOR_BUTTON}
@@ -41,9 +56,5 @@ function AddAuthor({ addNewAuthor }) {
 		</>
 	);
 }
-
-AddAuthor.propTypes = {
-	addNewAuthor: PropTypes.func,
-};
 
 export default AddAuthor;
