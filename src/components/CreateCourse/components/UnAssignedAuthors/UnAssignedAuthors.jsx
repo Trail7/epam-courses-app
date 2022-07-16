@@ -5,12 +5,11 @@ import {
 } from '../../../../constants';
 import AuthorItem from '../AuthorItem/AuthorItem';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getAuthors } from '../../../../selectors';
 
-function UnAssignedAuthors({
-	newCourseCandidate,
-	updateNewCourseCandidate,
-	authorsList,
-}) {
+function UnAssignedAuthors({ newCourseCandidate, updateNewCourseCandidate }) {
+	const authorsList = useSelector(getAuthors);
 	const [authorsForNewCourse, filterAuthorsForNewCourse] =
 		useState(authorsList);
 
@@ -46,7 +45,6 @@ function UnAssignedAuthors({
 UnAssignedAuthors.propTypes = {
 	newCourseCandidate: PropTypes.object,
 	updateNewCourseCandidate: PropTypes.func,
-	authorsList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default UnAssignedAuthors;

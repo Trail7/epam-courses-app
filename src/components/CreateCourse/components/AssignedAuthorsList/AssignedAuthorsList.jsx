@@ -6,12 +6,11 @@ import {
 } from '../../../../constants';
 import AuthorItem from '../AuthorItem/AuthorItem';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getAuthors } from '../../../../selectors';
 
-function AssignedAuthorsList({
-	newCourseCandidate,
-	authorsList,
-	updateNewCourseCandidate,
-}) {
+function AssignedAuthorsList({ newCourseCandidate, updateNewCourseCandidate }) {
+	const authorsList = useSelector(getAuthors);
 	return (
 		<>
 			<h5 className='text-center mb-4'>{NEW_COURSE_AUTHORS_LIST_TITLE}</h5>
@@ -45,7 +44,6 @@ function AssignedAuthorsList({
 AssignedAuthorsList.propTypes = {
 	newCourseCandidate: PropTypes.object,
 	updateNewCourseCandidate: PropTypes.func,
-	authorsList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default AssignedAuthorsList;

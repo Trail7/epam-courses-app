@@ -13,7 +13,7 @@ import {
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { registerUser } from '../../services';
 
 export const Registration = () => {
 	const navigate = useNavigate();
@@ -30,21 +30,10 @@ export const Registration = () => {
 		});
 	}
 
-	async function registerUser() {
-		return await axios.post(
-			'http://localhost:4000/register',
-			{ ...newUser },
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-	}
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 		if (newUser.name && newUser.password && newUser.email) {
-			registerUser()
+			registerUser(newUser)
 				.then((response) => {
 					if (response.status === 201) {
 						navigate('/login');

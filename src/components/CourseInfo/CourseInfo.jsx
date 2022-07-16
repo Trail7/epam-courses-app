@@ -1,15 +1,17 @@
 import React from 'react';
-import {
-	BACK_BUTTON,
-	mockedAuthorsList,
-	mockedCoursesList,
-} from '../../constants';
+import { BACK_BUTTON } from '../../constants';
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getAuthors, getCourses } from '../../selectors';
 
 export const CourseInfo = () => {
-	const coursesList = [...mockedCoursesList];
+	const courses = useSelector(getCourses);
+	const authors = useSelector(getAuthors);
+
 	const { courseId } = useParams();
-	const course = coursesList.find((course) => course.id === courseId);
+
+	const course = courses.find((course) => course.id === courseId);
+
 	return (
 		<div className='card container border px-5 py-2'>
 			<div>
@@ -34,7 +36,7 @@ export const CourseInfo = () => {
 					<p>
 						<strong>Authors: </strong>
 						{course.authors
-							.map((id) => mockedAuthorsList.find((el) => el.id === id).name)
+							.map((id) => authors.find((el) => el.id === id).name)
 							.join(', ')}
 					</p>
 				</div>

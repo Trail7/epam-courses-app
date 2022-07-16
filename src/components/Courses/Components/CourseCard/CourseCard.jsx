@@ -10,8 +10,20 @@ import {
 } from '../../../../constants';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { DeleteIcon } from '../../../../common/SVG/deleteIcon';
+import { EditIcon } from '../../../../common/SVG/editIcon';
+import { useSelector } from 'react-redux';
+import { getCourses } from '../../../../selectors';
+import { deleteCourse } from '../../../../store/courses/actions';
+import store from '../../../../store';
 
 function CourseCard({ course, authors }) {
+	const coursesList = useSelector(getCourses);
+	const handleCourseRemoval = () => {
+		const list = [...coursesList];
+		const filteredList = list.filter((item) => item.id !== course.id);
+		store.dispatch(deleteCourse(filteredList));
+	};
 	const navigate = useNavigate();
 	return (
 		<div className='card container border mb-4'>
@@ -46,6 +58,8 @@ function CourseCard({ course, authors }) {
 							onClick={() => navigate(`/courses/${course.id}`)}
 							buttonText={COURSE_CARD_BUTTON}
 						/>
+						<Button icon={<EditIcon />} />
+						<Button onClick={handleCourseRemoval} icon={<DeleteIcon />} />
 					</div>
 				</div>
 			</div>

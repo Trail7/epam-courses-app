@@ -11,13 +11,18 @@ import {
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { login } from '../../store/user/actions';
+import store from '../../store';
+import { loginUser } from '../../services';
 
 export const Login = () => {
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!!localStorage.getItem('result')) navigate('/courses');
-	});
+		// eslint-disable-next-line
+	}, []);
+
 	const [credentials, setCredentials] = useState({
 		email: '',
 		password: '',
@@ -30,34 +35,20 @@ export const Login = () => {
 		});
 	}
 
-	console.log(credentials);
-
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
 		if (credentials.email && credentials.password) {
-			await loginUser()
+			await loginUser(credentials)
 				.then((response) => {
 					if (response.status === 201) {
 						localStorage.setItem('result', response.data.result);
-						localStorage.setItem('user', response.data.user.name);
-						navigate('/courses');
+						store.dispatch(login(response.data));
 					}
 				})
+				.then(() => navigate('/courses'))
 				.catch((e) => console.log(e));
 		}
 	};
-
-	async function loginUser() {
-		return await axios.post(
-			'http://localhost:4000/login',
-			{ ...credentials },
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-	}
 
 	return (
 		<div className='mt-4'>

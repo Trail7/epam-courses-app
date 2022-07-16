@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Button(props) {
+function Button({ id, onClick, buttonText, icon }) {
 	return (
 		<button
-			id={props.id}
-			className='btn btn-outline-primary'
+			id={id}
+			className='btn btn-outline-primary ms-2'
 			type='submit'
-			onClick={props.onClick}
+			onClick={onClick}
 		>
-			{props.buttonText}
+			{icon}
+			{buttonText}
 		</button>
 	);
 }
@@ -18,6 +19,7 @@ Button.propTypes = {
 	id: PropTypes.string,
 	onClick: PropTypes.func,
 	buttonText: PropTypes.string,
+	icon: PropTypes.object,
 };
 
 export default Button;
