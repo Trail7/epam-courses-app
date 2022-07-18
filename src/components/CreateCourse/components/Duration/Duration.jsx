@@ -14,6 +14,7 @@ export const Duration = ({ updateNewCourseCandidate, newCourseCandidate }) => {
 		<>
 			<h5 className='text-center mb-4'>{NEW_COURSE_DURATION_TITLE}</h5>
 			<Input
+				value={newCourseCandidate.duration}
 				id={NEW_COURSE_DURATION_LABEL}
 				labelText={NEW_COURSE_DURATION_LABEL}
 				placeholderText={NEW_COURSE_DURATION_PLACEHOLDER}

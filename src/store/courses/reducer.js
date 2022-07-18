@@ -1,4 +1,9 @@
-import { ADD_NEW_COURSE_TO_STORE, DELETE_COURSE, FETCH_COURSES } from './types';
+import {
+	ADD_NEW_COURSE_TO_STORE,
+	DELETE_COURSE,
+	FETCH_COURSES,
+	UPDATE_COURSE,
+} from './types';
 
 const initialState = [];
 
@@ -9,6 +14,8 @@ export default function coursesReducer(state = initialState, action) {
 		case DELETE_COURSE:
 			return action.payload;
 		case ADD_NEW_COURSE_TO_STORE:
+			return action.payload;
+		case UPDATE_COURSE:
 			return action.payload;
 		default:
 			return state;

@@ -13,18 +13,37 @@ import PropTypes from 'prop-types';
 import { DeleteIcon } from '../../../../common/SVG/deleteIcon';
 import { EditIcon } from '../../../../common/SVG/editIcon';
 import { useSelector } from 'react-redux';
-import { getCourses } from '../../../../selectors';
-import { deleteCourse } from '../../../../store/courses/actions';
+import { getAuthors, getUser } from '../../../../selectors';
 import store from '../../../../store';
+import { removeCourse } from '../../../../store/courses/thunk';
 
-function CourseCard({ course, authors }) {
-	const coursesList = useSelector(getCourses);
-	const handleCourseRemoval = () => {
-		const list = [...coursesList];
-		const filteredList = list.filter((item) => item.id !== course.id);
-		store.dispatch(deleteCourse(filteredList));
-	};
+function CourseCard({ course }) {
+	const { role, token } = useSelector(getUser);
+	const authors = useSelector(getAuthors);
 	const navigate = useNavigate();
+
+	const handleCourseRemoval = () => {
+		store.dispatch(removeCourse(course.id, token));
+	};
+
+	const handleCourseEdit = () => {
+		navigate(`/courses/update/${course.id}`);
+	};
+
+	const getAuthorsById = (list) => {
+		return list.map((id) =>
+			authors.filter((author) => author.id === id).map((author) => author.name)
+		);
+	};
+
+	const renderEditRemoveButtons = () => {
+		return role === 'admin' ? (
+			<>
+				<Button onClick={handleCourseEdit} icon={<EditIcon />} />
+				<Button onClick={handleCourseRemoval} icon={<DeleteIcon />} />
+			</>
+		) : null;
+	};
 	return (
 		<div className='card container border mb-4'>
 			<div className='row'>
@@ -39,7 +58,7 @@ function CourseCard({ course, authors }) {
 						{course.authors && (
 							<p className='text-truncate'>
 								<strong>{COURSE_CARD_AUTHORS_LABEL}</strong>
-								{authors.join(', ')}
+								{getAuthorsById(course.authors).join(', ')}
 							</p>
 						)}
 						{course.duration && (
@@ -58,8 +77,7 @@ function CourseCard({ course, authors }) {
 							onClick={() => navigate(`/courses/${course.id}`)}
 							buttonText={COURSE_CARD_BUTTON}
 						/>
-						<Button icon={<EditIcon />} />
-						<Button onClick={handleCourseRemoval} icon={<DeleteIcon />} />
+						{renderEditRemoveButtons()}
 					</div>
 				</div>
 			</div>

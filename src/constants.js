@@ -7,6 +7,7 @@ export const LOGO_ALT_TEXT = 'logo';
 export const SEARCH_BUTTON_PLACEHOLDER_TEXT = 'Enter course name...';
 export const ADD_NEW_COURSE_BUTTON = 'Add new course';
 export const CREATE_COURSE_BUTTON = 'Create course';
+export const UPDATE_COURSE_BUTTON = 'Update course';
 
 export const COURSE_CARD_AUTHORS_LABEL = 'Authors: ';
 export const COURSE_CARD_DURATION_LABEL = 'Duration: ';

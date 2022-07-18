@@ -7,25 +7,30 @@ import store from '../../store';
 import { logout } from '../../store/user/actions';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../selectors';
+import { apiService } from '../../services';
 
 export const Header = () => {
 	const navigate = useNavigate();
+	const user = useSelector(getUser);
 	const { pathname } = useLocation();
+
 	const handleLogout = () => {
-		localStorage.removeItem('result');
-		localStorage.removeItem('user');
+		apiService
+			.logout(user.token)
+			.then(() => console.log('user was logged out'));
+		localStorage.clear();
 		store.dispatch(logout());
 		navigate('/login');
 	};
-	const user = useSelector(getUser);
-	const token = localStorage.getItem('result');
+
+	const AuthToken = localStorage.getItem('result');
 	return (
 		<nav className='navbar'>
 			<div className='container border bg-light'>
 				<a className='navbar-brand' href='/'>
 					<Logo />
 				</a>
-				{pathname !== '/login' && pathname !== '/registration' && token ? (
+				{pathname !== '/login' && pathname !== '/registration' && AuthToken ? (
 					<div className='d-flex justify-content-end align-items-center'>
 						<div>
 							<span className='pe-4'>{user.name}</span>
