@@ -12,7 +12,7 @@ import { apiService } from '../../services';
 export const Header = () => {
 	const navigate = useNavigate();
 	const user = useSelector(getUser);
-	const { pathname } = useLocation();
+	const { pathname } = useLocation() || 'test';
 
 	const handleLogout = () => {
 		apiService
@@ -23,7 +23,7 @@ export const Header = () => {
 		navigate('/login');
 	};
 
-	const AuthToken = localStorage.getItem('result');
+	const AuthToken = localStorage.getItem('result') || user.token;
 	return (
 		<nav className='navbar'>
 			<div className='container border bg-light'>
@@ -33,7 +33,9 @@ export const Header = () => {
 				{pathname !== '/login' && pathname !== '/registration' && AuthToken ? (
 					<div className='d-flex justify-content-end align-items-center'>
 						<div>
-							<span className='pe-4'>{user.name}</span>
+							<span className='pe-4' data-testid='header-user-name'>
+								{user.name}
+							</span>
 						</div>
 						<Button onClick={handleLogout} buttonText={LOGOUT_BUTTON} />
 					</div>

@@ -59,6 +59,7 @@ export default function Courses() {
 	const renderAddNewCourseButton = () => {
 		return role === 'admin' ? (
 			<Button
+				testid='add-new-course-button'
 				buttonText={ADD_NEW_COURSE_BUTTON}
 				onClick={() => navigate('/courses/add')}
 			/>
