@@ -13,7 +13,8 @@ import Button from '../../common/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../store/user/actions';
 import store from '../../store';
-import { loginUser } from '../../services';
+import { apiService } from '../../services';
+import { getUsersRole } from '../../store/user/thunk';
 
 export const Login = () => {
 	const navigate = useNavigate();
@@ -38,11 +39,13 @@ export const Login = () => {
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
 		if (credentials.email && credentials.password) {
-			await loginUser(credentials)
+			await apiService
+				.loginUser(credentials)
 				.then((response) => {
 					if (response.status === 201) {
 						localStorage.setItem('result', response.data.result);
 						store.dispatch(login(response.data));
+						store.dispatch(getUsersRole(response.data.result));
 					}
 				})
 				.then(() => navigate('/courses'))

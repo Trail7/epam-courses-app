@@ -7,7 +7,7 @@ export default function authorsReducer(state = authorsInitialState, action) {
 		case FETCH_AUTHORS:
 			return action.payload;
 		case ADD_AUTHOR:
-			return action.payload;
+			return [...action.payload];
 		default:
 			return state;
 	}

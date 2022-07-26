@@ -7,24 +7,20 @@ import {
 } from '../../../../constants';
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
-import { useSelector } from 'react-redux';
-import { getAuthors } from '../../../../selectors';
-import { v4 as uuidv4 } from 'uuid';
 import store from '../../../../store';
-import { addNewAuthor } from '../../../../store/authors/actions';
+import { addNewAuthorOnServer } from '../../../../store/authors/thunk';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../../selectors';
 
 function AddAuthor() {
-	const authors = useSelector(getAuthors);
 	const [authorInputValue, setAuthorInputValue] = useState('');
+	const { token } = useSelector(getUser);
 
 	function handleAddNewAuthor(value) {
-		const authorsListCandidate = [...authors];
 		const authorCandidate = {
-			id: uuidv4(),
 			name: value,
 		};
-		authorsListCandidate.push(authorCandidate);
-		store.dispatch(addNewAuthor(authorsListCandidate));
+		store.dispatch(addNewAuthorOnServer(authorCandidate, token));
 	}
 
 	return (

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 function NewCourseTitle({ updateNewCourseCandidate, newCourseCandidate }) {
 	return (
 		<Input
+			value={newCourseCandidate.title}
 			id={NEW_COURSE_TITLE}
 			labelText={NEW_COURSE_TITLE}
 			placeholderText={NEW_COURSE_TITLE_PLACEHOLDER}

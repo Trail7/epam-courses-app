@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Textarea(props) {
+function Textarea({ labelText, text, id, value, onChange, placeholder }) {
 	return (
 		<div className='row'>
 			<label>
-				{props.labelText}
+				{labelText}
 				<textarea
-					id={props.id}
+					id={id}
 					className='form-control mb-4'
 					rows='3'
-					placeholder={props.placeholder}
-					onChange={props.onChange}
+					placeholder={placeholder}
+					onChange={onChange}
+					value={value}
 				>
-					{props.text}
+					{text}
 				</textarea>
 			</label>
 		</div>
@@ -21,10 +22,12 @@ function Textarea(props) {
 }
 
 Textarea.propTypes = {
+	labelText: PropTypes.string,
 	id: PropTypes.string,
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	text: PropTypes.string,
+	value: PropTypes.string,
 };
 
 export default Textarea;

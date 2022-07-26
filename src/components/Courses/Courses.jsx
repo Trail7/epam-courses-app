@@ -4,15 +4,17 @@ import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
 import { ADD_NEW_COURSE_BUTTON } from '../../constants';
 import { useNavigate } from 'react-router-dom';
-import { fetchAllCourses } from '../../store/courses/actions';
 import { useSelector } from 'react-redux';
 import store from '../../store';
-import { getAuthors, getCourses } from '../../selectors';
-import { fetchAllAuthors } from '../../store/authors/actions';
+import { getCourses, getUser } from '../../selectors';
+import { getUsersRole } from '../../store/user/thunk';
+import { fetchAllAuthors } from '../../store/authors/thunk';
+import { fetchAllCourses } from '../../store/courses/thunk';
 
 export default function Courses() {
 	const courses = useSelector(getCourses);
-	const authors = useSelector(getAuthors);
+	const localToken = localStorage.getItem('result');
+	const { role } = useSelector(getUser);
 	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState('');
 	const [coursesList, filterCoursesList] = useState(courses);
@@ -25,8 +27,12 @@ export default function Courses() {
 	});
 
 	useEffect(() => {
-		if (courses.length === 0) store.dispatch(fetchAllCourses());
-		if (authors.length === 0) store.dispatch(fetchAllAuthors());
+		store.dispatch(fetchAllCourses());
+		store.dispatch(fetchAllAuthors());
+	}, []);
+
+	useEffect(() => {
+		if (!role && localToken) store.dispatch(getUsersRole(localToken));
 		// eslint-disable-next-line
 	}, []);
 
@@ -44,22 +50,19 @@ export default function Courses() {
 		if (!event.target.value) filterCoursesList(courses);
 	};
 
-	const getAuthorsById = (list) => {
-		return list.map((id) =>
-			authors.filter((author) => author.id === id).map((author) => author.name)
-		);
-	};
-
 	const renderCourses = () => {
 		return coursesList.map((course) => {
-			return (
-				<CourseCard
-					key={course.id}
-					course={course}
-					authors={getAuthorsById(course.authors)}
-				/>
-			);
+			return <CourseCard key={course.id} course={course} />;
 		});
+	};
+
+	const renderAddNewCourseButton = () => {
+		return role === 'admin' ? (
+			<Button
+				buttonText={ADD_NEW_COURSE_BUTTON}
+				onClick={() => navigate('/courses/add')}
+			/>
+		) : null;
 	};
 
 	return (
@@ -72,10 +75,7 @@ export default function Courses() {
 					/>
 				</div>
 				<div className='d-flex justify-content-end col-md-6 align-items-center'>
-					<Button
-						buttonText={ADD_NEW_COURSE_BUTTON}
-						onClick={() => navigate('/courses/add')}
-					/>
+					{renderAddNewCourseButton()}
 				</div>
 			</div>
 			{renderCourses()}

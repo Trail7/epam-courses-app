@@ -13,7 +13,7 @@ import {
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../../services';
+import { apiService } from '../../services';
 
 export const Registration = () => {
 	const navigate = useNavigate();
@@ -33,7 +33,8 @@ export const Registration = () => {
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 		if (newUser.name && newUser.password && newUser.email) {
-			registerUser(newUser)
+			apiService
+				.registerUser(newUser)
 				.then((response) => {
 					if (response.status === 201) {
 						navigate('/login');

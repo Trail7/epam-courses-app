@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 function Description({ newCourseCandidate, updateNewCourseCandidate }) {
 	return (
 		<Textarea
+			value={newCourseCandidate.description}
 			id={NEW_COURSE_DESCRIPTION}
 			labelText={NEW_COURSE_DESCRIPTION}
 			placeholder={NEW_COURSE_DESCRIPTION_PLACEHOLDER}

@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Input(props) {
+function Input({ id, type, placeholderText, onChange, value, labelText }) {
 	return (
 		<>
-			<label htmlFor={props.id}>{props.labelText}</label>
+			<label htmlFor={id}>{labelText}</label>
 			<input
 				className='form-control me-2'
-				id={props.id}
-				type={props.type || 'text'}
-				placeholder={props.placeholderText}
-				onChange={props.onChange}
-				value={props.value}
+				id={id}
+				type={type || 'text'}
+				placeholder={placeholderText}
+				onChange={onChange}
+				value={value}
 			/>
 		</>
 	);
@@ -20,9 +20,10 @@ function Input(props) {
 Input.propTypes = {
 	id: PropTypes.string,
 	type: PropTypes.string,
-	placeholder: PropTypes.string,
+	placeholderText: PropTypes.string,
 	onChange: PropTypes.func,
-	value: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	labelText: PropTypes.string,
 };
 
 export default Input;
