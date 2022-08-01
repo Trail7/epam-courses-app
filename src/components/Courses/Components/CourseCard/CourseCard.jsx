@@ -18,12 +18,12 @@ import store from '../../../../store';
 import { removeCourse } from '../../../../store/courses/thunk';
 
 function CourseCard({ course }) {
-	const { role, token } = useSelector(getUser);
+	const user = useSelector(getUser);
 	const authors = useSelector(getAuthors);
 	const navigate = useNavigate();
 
 	const handleCourseRemoval = () => {
-		store.dispatch(removeCourse(course.id, token));
+		store.dispatch(removeCourse(course.id, user.token));
 	};
 
 	const handleCourseEdit = () => {
@@ -37,7 +37,7 @@ function CourseCard({ course }) {
 	};
 
 	const renderEditRemoveButtons = () => {
-		return role === 'admin' ? (
+		return user.role === 'admin' ? (
 			<>
 				<Button onClick={handleCourseEdit} icon={<EditIcon />} />
 				<Button onClick={handleCourseRemoval} icon={<DeleteIcon />} />
@@ -58,19 +58,25 @@ function CourseCard({ course }) {
 						{course.authors && (
 							<p className='text-truncate'>
 								<strong>{COURSE_CARD_AUTHORS_LABEL}</strong>
-								{getAuthorsById(course.authors).join(', ')}
+								<span data-testid='course-card-authors-list'>
+									{getAuthorsById(course.authors).join(', ')}
+								</span>
 							</p>
 						)}
 						{course.duration && (
 							<p>
 								<strong>{COURSE_CARD_DURATION_LABEL}</strong>
-								{getCourseDuration(course.duration).formatted}
+								<span data-testid='formatted-course-duration'>
+									{getCourseDuration(course.duration).formatted}
+								</span>
 							</p>
 						)}
 						{course.creationDate && (
 							<p>
 								<strong>{COURSE_CARD_CREATED_LABEL}</strong>
-								{formatCreationDate(course.creationDate)}
+								<span data-testid='formatted-course-creation-date'>
+									{formatCreationDate(course.creationDate)}
+								</span>
 							</p>
 						)}
 						<Button
@@ -87,7 +93,6 @@ function CourseCard({ course }) {
 
 CourseCard.propTypes = {
 	course: PropTypes.object,
-	authors: PropTypes.array,
 };
 
 export default CourseCard;
